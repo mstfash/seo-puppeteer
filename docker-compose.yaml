@@ -1,0 +1,12 @@
+version: '3'
+services:
+  seo-puppeteer:
+    cap_add:
+      - SYS_ADMIN
+    container_name: seo-puppeteer
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3080:3080'
