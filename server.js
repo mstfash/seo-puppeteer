@@ -6,13 +6,24 @@ const PORT = 3080;
 
 async function renderToBot(req, res, next) {
   if (req.query.url) {
-    const botUrl = req.query.url;
-    const browser = await puppeteer.launch();
-    const page = await browser.newPage();
-    await page.goto(botUrl, { waitUntil: 'networkidle2' });
-    const content = await page.content();
-    await browser.close();
-    res.send(content.toString());
+    let browser;
+    try {
+      const botUrl = req.query.url;
+      browser = await puppeteer.launch({
+        args: ['--disable-dev-shm-usage'],
+      });
+      const page = await browser.newPage();
+      await page.goto(botUrl, { waitUntil: 'networkidle2' });
+      const content = await page.content();
+      await page.close();
+      res.send(content.toString());
+    } catch (error) {
+      console.log(error);
+    } finally {
+      if (browser) {
+        browser.close();
+      }
+    }
   } else {
     next();
   }
