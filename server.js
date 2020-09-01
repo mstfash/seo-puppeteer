@@ -13,7 +13,7 @@ async function renderToBot(req, res, next) {
         args: ['--disable-dev-shm-usage'],
       });
       const page = await browser.newPage();
-      await page.goto(botUrl, { waitUntil: 'networkidle2' });
+      await page.goto(botUrl, { waitUntil: 'networkidle2', timeout: 0 });
       const content = await page.content();
       await page.close();
       res.send(content.toString());
